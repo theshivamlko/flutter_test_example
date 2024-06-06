@@ -46,7 +46,7 @@ main() {
     expect(btn, findsOneWidget);
   });
 
-  testWidgets("Show Error if email  empty", (WidgetTester tester) async {
+  testWidgets("Show Error if email empty", (WidgetTester tester) async {
     // Arrange
     await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
 

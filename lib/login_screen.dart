@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_example/MyHomePage.dart';
 import 'package:flutter_test_example/validator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -9,7 +10,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var key=GlobalKey<FormState>();
+  var key = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: "Enter your email",
 
                     ),
-                    validator: (value)  =>Validator().validateEmail(value),
+                    validator: (value) => Validator().validateEmail(value),
 
                   ),
                   TextFormField(
@@ -38,17 +40,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "Password",
                       hintText: "Enter your password",
                     ),
-                    validator: (value)  =>Validator().validatePassword(value),
+                    validator: (value) => Validator().validatePassword(value),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      if(key.currentState!.validate()){
+                      if (key.currentState!.validate()) {
                         // Do something
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => MyHomePage(title: "Books"),));
                       }
-                      else{
+                      else {
                         // Show error
                       }
-
                     },
                     child: Text("Login"),
                   )

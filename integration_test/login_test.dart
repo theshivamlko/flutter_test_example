@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_test_example/MyHomePage.dart';
@@ -6,13 +5,14 @@ import 'package:flutter_test_example/login_screen.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {
-
   group("Login Flow Test", () {
+    IntegrationTestWidgetsFlutterBinding
+        .ensureInitialized(); // Initialize integration test binding
 
-    IntegrationTestWidgetsFlutterBinding.ensureInitialized(); // Initialize integration test binding
-
-    testWidgets("When button clicked, show error if email is empty", (WidgetTester tester) async {
-      await tester.pumpWidget(const MaterialApp(home: LoginScreen())); // Pump the widget
+    testWidgets("When button clicked, show error if email is empty", (
+        WidgetTester tester) async {
+      await tester.pumpWidget(
+          const MaterialApp(home: LoginScreen())); // Pump the widget
 
       // Find and tap the button
       await tester.tap(find.byType(ElevatedButton));
@@ -69,11 +69,44 @@ void main() {
       await tester.pumpWidget(MaterialApp(home: MyHomePage(title: "Test")));
       await tester.pumpAndSettle();
 
-      Finder errorText1 = find.text("Test");
+      Finder errorText1 = find.text("Fetch Data Example");
 
 
       // Assert
       expect(errorText1, findsOneWidget);
-     });
+    });
+
+    testWidgets("Login click open HomePage and shows List", (
+        WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+      // Act
+      Finder email = find.byKey(ValueKey("emailId"));
+      Finder pass = find.byKey(ValueKey("password"));
+
+      await tester.enterText(email, "abc@gmail.com");
+      await tester.enterText(pass, "123456");
+
+      Finder btn = find.byType(ElevatedButton);
+
+      await tester.tap(btn);
+      // Wait for the widget to rebuild or animation then write u test case
+      await tester.pumpAndSettle();
+
+      await tester.pumpWidget(MaterialApp(home: MyHomePage(title: "Test")));
+      await tester.pumpAndSettle(Duration(seconds: 5));
+
+      Finder listItem = find
+          .byType(ListTile)
+          .first;
+      // Assert
+
+      expect(listItem, findsOneWidget);
+
+      expect(find.descendant(
+          of: listItem, matching: find.text("The 5 Second Rule")),
+          findsOneWidget);
+    });
   });
 }

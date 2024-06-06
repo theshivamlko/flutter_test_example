@@ -5,17 +5,24 @@ String fetchBooksURL =
     'https://raw.githubusercontent.com/Richa0305/mock-json/main/book.json';
 
 Future<List<BooksListModel>> fetchBooks(http.Client client) async {
-  final response = await client.get(Uri.parse(fetchBooksURL)); // Call API
+  try {
+    final response = await client.get(Uri.parse(fetchBooksURL)); // Call API
 
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return List<BooksListModel>.from(
-        json.decode(response.body).map((x) => BooksListModel.fromJson(x)));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return List<BooksListModel>.from(
+          json.decode(response.body).map((x) => BooksListModel.fromJson(x)));
+    } else {
+      print("11111111");
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception(response.body);
+    }
+  } catch (error) {
+    print("222222222");
+    rethrow;
+    Exception('Failed to load album');
   }
 }
 
